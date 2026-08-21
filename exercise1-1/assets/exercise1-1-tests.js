@@ -1,4 +1,4 @@
-import { RECT, TestResults, advanceToFrame, canvasStatus, checkBackgroundIsCalledInDraw, checkCanvasSize, coloursMatch, getShapes, simulateKeyboardEvent, testShapesMatchInOrder } from "../../lib/test-utils.js";
+import { SHAPE, TestResults, advanceToFrame, canvasStatus, checkBackgroundIsCalledInDraw, checkCanvasSize, coloursMatch, getShapes, simulateKeyboardEvent, testShapesMatchInOrder } from "https://cdn.jsdelivr.net/gh/Supportive-IDE/p5js-testing-demo@latest/p5jsTestingLibrary.js";
 
 /**
  * A hacky solution to wait for p5js to load the canvas. Include in all exercise test files.
@@ -43,7 +43,7 @@ async function runTests(canvas) {
         TestResults.addFail("If the rectangles are randomly generated, <code>random()</code> should be called at least 400 times (4 properties per rectangle times 100 rectangles).");
     }
     const firstShapes = getShapes();
-    const rectCount = firstShapes.filter(s => s.type === RECT).length;
+    const rectCount = firstShapes.filter(s => s.type === SHAPE.RECT).length;
     if (firstShapes.length === 100 && rectCount === 100) {
         TestResults.addPass("There are 100 rectangles.");
     } else {
@@ -61,9 +61,9 @@ async function runTests(canvas) {
     if (!hasKeyPressed && !hasKeyReleased) {
         TestResults.addFail("The sketch does not implement a keyboard event function.");
     } else {
-        advanceToFrame(frameCount + 1);
+        await advanceToFrame(frameCount + 1);
         const secondShapes = getShapes();
-        const rectCount2 = secondShapes.filter(s => s.type === RECT).length;
+        const rectCount2 = secondShapes.filter(s => s.type === SHAPE.RECT).length;
         if (secondShapes.length === 100 && rectCount2 === 100) {
             TestResults.addPass("When the space bar has been pressed, there are 100 rectangles.");
             if (!testShapesMatchInOrder(firstShapes, secondShapes)) {
@@ -78,7 +78,7 @@ async function runTests(canvas) {
             if (hasKeyReleased) {
                 simulateKeyboardEvent(keyReleased, "a");
             }
-            advanceToFrame(frameCount + 1);
+            await advanceToFrame(frameCount + 1);
             const thirdShapes = getShapes();
             if (testShapesMatchInOrder(secondShapes, thirdShapes)) {
                 TestResults.addPass("Pressing a key other than the space bar does not change the rectangles.");

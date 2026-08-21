@@ -1,4 +1,4 @@
-import { RECT, SQUARE, TestResults, advanceToFrame, canvasStatus, checkBackgroundIsCalledInDraw, checkCanvasSize, getShapes, simulateKeyboardEvent } from "../../lib/test-utils.js";
+import { TestResults, advanceToFrame, canvasStatus, checkBackgroundIsCalledInDraw, checkCanvasSize, getShapes, simulateKeyboardEvent } from "https://cdn.jsdelivr.net/gh/Supportive-IDE/p5js-testing-demo@latest/p5jsTestingLibrary.js";
 
 /**
  * A hacky solution to wait for p5js to load the canvas. Include in all exercise test files.
@@ -60,18 +60,18 @@ function checkShapesMatchObjects(msgPrefix) {
     }
 }
 
-function movePlayer(wasd) {
+async function movePlayer(wasd) {
     const prevX = player.x;
     const prevY = player.y;
-    keyIsPressed = true;
-    key = wasd;
+    window.mock_keyIsPressed = true;
+    window.mock_key = wasd;
     if (window.hasOwnProperty("keyPressed")) {
         simulateKeyboardEvent(keyPressed, wasd);
     }
     if (window.hasOwnProperty("keyReleased")) {
         simulateKeyboardEvent(keyReleased, wasd);
     }
-    advanceToFrame(frameCount + 1);
+    await advanceToFrame(frameCount + 1);
     let xMsg = "";
     if (player.x > prevX) {
         xMsg = "<code>player.x</code> increased";
@@ -120,24 +120,24 @@ function movePlayer(wasd) {
             TestResults.addFail(`When the s key is pressed, the <code>player.x</code> should stay the same and <code>player.y</code> should increase. Instead, ${xMsg}, and ${yMsg}.`);
         }
     }
-    keyIsPressed = false;
-    advanceToFrame(frameCount + 1);
+    window.mock_keyIsPressed = false;
+    await advanceToFrame(frameCount + 1);
 }
 
-function playerObstacle() {
+async function playerObstacle() {
     // put player on left
     player.x = obstacle.x - player.size;
     player.y = obstacle.y;
     const playerLeftX = player.x;
-    keyIsPressed = true;
-    key = "d";
+    window.mock_keyIsPressed = true;
+    window.mock_key = "d";
     if (window.hasOwnProperty("keyPressed")) {
         simulateKeyboardEvent(keyPressed, "d");
     }
     if (window.hasOwnProperty("keyReleased")) {
         simulateKeyboardEvent(keyReleased, "d");
     }
-    advanceToFrame(frameCount + 1);
+    await advanceToFrame(frameCount + 1);
     if (player.x === playerLeftX) {
         TestResults.addPass("When the player is against the left edge of the obstacle, it cannot move right.");
     } else {
@@ -147,14 +147,14 @@ function playerObstacle() {
     player.x = obstacle.x + obstacle.width;
     player.y = obstacle.y;
     const playerRightX = player.x;
-    key = "w";
+    window.mock_key = "w";
     if (window.hasOwnProperty("keyPressed")) {
         simulateKeyboardEvent(keyPressed, "w");
     }
     if (window.hasOwnProperty("keyReleased")) {
         simulateKeyboardEvent(keyReleased, "w");
     }
-    advanceToFrame(frameCount + 1);
+    await advanceToFrame(frameCount + 1);
     if (player.x === playerRightX) {
         TestResults.addPass("When the player is against the right edge of the obstacle, it cannot move left.");
     } else {
@@ -164,14 +164,14 @@ function playerObstacle() {
     player.x = obstacle.x;
     player.y = obstacle.y - player.size;
     const playerTopY = player.y;
-    key = "s";
+    window.mock_key = "s";
     if (window.hasOwnProperty("keyPressed")) {
         simulateKeyboardEvent(keyPressed, "s");
     }
     if (window.hasOwnProperty("keyReleased")) {
         simulateKeyboardEvent(keyReleased, "s");
     }
-    advanceToFrame(frameCount + 1);
+    await advanceToFrame(frameCount + 1);
     if (player.y === playerTopY) {
         TestResults.addPass("When the player is against the top edge of the obstacle, it cannot move down.");
     } else {
@@ -181,14 +181,14 @@ function playerObstacle() {
     player.x = obstacle.x;
     player.y = obstacle.y + obstacle.height;
     const playerBottomY = player.y;
-    key = "w";
+    window.mock_key = "w";
     if (window.hasOwnProperty("keyPressed")) {
         simulateKeyboardEvent(keyPressed, "w");
     }
     if (window.hasOwnProperty("keyReleased")) {
         simulateKeyboardEvent(keyReleased, "w");
     }
-    advanceToFrame(frameCount + 1);
+    await advanceToFrame(frameCount + 1);
     if (player.y === playerBottomY) {
         TestResults.addPass("When the player is against the bottom edge of the obstacle, it cannot move up.");
     } else {
@@ -218,13 +218,13 @@ async function runTests(canvas) {
             TestResults.addWarning("A keyboard event function appears to have been implemented. To make the player move smoothly, use the <code>keyIsPressed</code> system variable rather than an event function.");
         }
         // Move left, right, up, down -> object values change, shapes still match objects
-        movePlayer("d");
+        await movePlayer("d");
         // checkShapesMatchObjects("When the d key is pressed");
-        movePlayer("a");
-        movePlayer("w");
-        movePlayer("s");
+        await movePlayer("a");
+        await movePlayer("w");
+        await movePlayer("s");
         // Can't pass through the obstacle
-        playerObstacle();
+        await playerObstacle();
     }
     TestResults.display(resultsDiv);
 }

@@ -1,4 +1,4 @@
-import { RECT, TestResults, advanceToFrame, canvasStatus, checkBackgroundIsCalledInDraw, checkCanvasSize, coloursMatch, getShapes, simulateKeyboardEvent, testShapesMatchInOrder } from "../../lib/test-utils.js";
+import { TestResults, advanceToFrame, canvasStatus, checkBackgroundIsCalledInDraw, checkCanvasSize, coloursMatch, getShapes, simulateKeyboardEvent, testShapesMatchInOrder } from "https://cdn.jsdelivr.net/gh/Supportive-IDE/p5js-testing-demo@latest/p5jsTestingLibrary.js";
 
 /**
  * A hacky solution to wait for p5js to load the canvas. Include in all exercise test files.
@@ -31,7 +31,7 @@ async function runTests(canvas) {
             } else {
                 TestResults.addFail("The diameter should initially be set to 100.");
             }
-            advanceToFrame(102);
+            await advanceToFrame(102);
             if (ball.speedY < 0) {
                 if (ball.diameter === 99) {
                     TestResults.addPass("The ball's diameter shrinks by one when it bounces off the bottom wall.");
@@ -41,7 +41,7 @@ async function runTests(canvas) {
             } else {
                 TestResults.addFail(`By frame 102, the ball should have bounced off the bottom of the canvas and the speed on the y axis should be negative. The speedY of the ball is ${ball.speedY}.`);
             }
-            advanceToFrame(169);
+            await advanceToFrame(169);
             if (ball.speedX < 0) {
                 if (ball.diameter === 98) {
                     TestResults.addPass("The ball's diameter shrinks by one when it bounces off the left wall.");
