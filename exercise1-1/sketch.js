@@ -18,5 +18,23 @@ background (200,150,250)
 }
 
 function addRect () {
-    
+    for (let i = 0; i < 100; i++) {
+        let r ={
+            x : random(width),
+            y : random(height),
+            w : random (5, 10),
+            h : random (5,10),
+
+}
+shapes.push (r);
+console.log(shapes);
+    }
+}
+
+
+function keyPressed () {
+    shapes = []
+    if (key === '') {
+        addRect ()
+    }
 }
