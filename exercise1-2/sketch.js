@@ -15,16 +15,15 @@ function draw() {
     circle(ball.x, ball.y, ball.diameter);
     if (ball.x < ball.diameter / 2 || ball.x > width - ball.diameter / 2) {
         ball.speedX *= -1;
-        ball.diameter += 10;
+        ball.diameter -= 1;
     }
     if (ball.y < ball.diameter / 2 || ball.y > height - ball.diameter / 2) {
         ball.speedY *= -1;
-        ball.diameter +=10;
-{
+        ball.diameter -= 1;
+    }
     ball.x += ball.speedX;
     ball.y += ball.speedY;
     
     
 }
-}
-}
+

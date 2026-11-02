@@ -1,4 +1,4 @@
-let = shapes[i];
+let = shapes [i];
 
 function setup () {
     createCanvas(600,600)
@@ -15,7 +15,7 @@ background (200,150,250)
         }
     }
 
-}
+
 
 function addRect () {
     for (let i = 0; i < 100; i++) {
@@ -30,11 +30,12 @@ shapes.push (r);
 console.log(shapes);
     }
 }
+}
 
 
 function keyPressed () {
     shapes = []
-    if (key === '') {
+    if (key === g) {
         addRect ()
     }
 }
